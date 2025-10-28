@@ -136,5 +136,5 @@ class Boy:
 
     def fire_ball(self):
         ball = Ball(self.x, self.y, self.face_dir*10)
-        game_world.add_object(ball)
+        game_world.add_object(ball, 1)
 
