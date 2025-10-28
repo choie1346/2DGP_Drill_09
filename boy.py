@@ -11,16 +11,10 @@ time_out = lambda e: e[0] == 'TIMEOUT'
 
 def right_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
-
-
 def right_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_RIGHT
-
-
 def left_down(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_LEFT
-
-
 def left_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_LEFT
 
@@ -30,7 +24,6 @@ def left_up(e):
 
 
 class Idle:
-
     def __init__(self, boy):
         self.boy = boy
 
@@ -38,9 +31,9 @@ class Idle:
         self.boy.wait_time = get_time()
         self.boy.dir = 0
 
-
     def exit(self, e):
-        pass
+        if space_down(e):
+            self.boy.fire_ball()
 
     def do(self):
         self.boy.frame = (self.boy.frame + 1) % 8
@@ -55,7 +48,6 @@ class Idle:
 
 
 class Sleep:
-
     def __init__(self, boy):
         self.boy = boy
 
@@ -67,7 +59,6 @@ class Sleep:
 
     def do(self):
         self.boy.frame = (self.boy.frame + 1) % 8
-
 
     def handle_event(self, event):
         pass
@@ -91,7 +82,8 @@ class Run:
             self.boy.dir = self.boy.face_dir = -1
 
     def exit(self, e):
-        pass
+        if space_down(e):
+            self.boy.fire_ball()
 
     def do(self):
         self.boy.frame = (self.boy.frame + 1) % 8
@@ -124,8 +116,8 @@ class Boy:
             self.IDLE,
             {
                 self.SLEEP : {space_down: self.IDLE},
-                self.IDLE : {time_out: self.SLEEP, right_down: self.RUN, left_down: self.RUN, right_up: self.RUN, left_up: self.RUN},
-                self.RUN : {right_up: self.IDLE, left_up: self.IDLE, right_down: self.IDLE, left_down: self.IDLE}
+                self.IDLE : {space_down: self.IDLE, time_out: self.SLEEP, right_down: self.RUN, left_down: self.RUN, right_up: self.RUN, left_up: self.RUN},
+                self.RUN : {space_down: self.RUN, right_up: self.IDLE, left_up: self.IDLE, right_down: self.IDLE, left_down: self.IDLE}
             }
         )
 
@@ -138,3 +130,9 @@ class Boy:
 
     def draw(self):
         self.state_machine.draw()
+
+    def fire_ball(self):
+        if self.face_dir == 1:
+            print('Fire ball to right')
+        elif self.face_dir == -1:
+            print('Fire ball to left')
