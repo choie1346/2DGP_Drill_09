@@ -1,5 +1,7 @@
 from pico2d import load_image, get_time
 from sdl2 import SDL_KEYDOWN, SDLK_SPACE, SDLK_RIGHT, SDL_KEYUP, SDLK_LEFT
+
+import game_world
 from ball import Ball
 
 from state_machine import StateMachine
@@ -133,4 +135,6 @@ class Boy:
         self.state_machine.draw()
 
     def fire_ball(self):
-        ball = Ball(self.x, self.y, self.face_dir)
+        ball = Ball(self.x, self.y, self.face_dir*10)
+        game_world.add_object(ball)
+
