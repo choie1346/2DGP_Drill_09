@@ -1,6 +1,4 @@
-# world[0] : 배경(가장 밑)
-# world[1] : 캐릭터(가장 위)
-world = [[], []]
+world = [[], [], []]
 
 # world object 추가
 def add_object(o, depth = 1):
