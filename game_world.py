@@ -1,3 +1,4 @@
+# 0 : back_grass, 1 : boy, ball, 2 : front_grass
 world = [[], [], []]
 
 # world object 추가
